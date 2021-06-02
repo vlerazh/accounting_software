@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\CompanyDetailsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,18 +34,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('customers', CustomerController::class);
 	Route::resource('items', ItemController::class);
 	Route::resource('invoices', InvoiceController::class);
+
 	Route::get('invoice/export', [InvoiceController::class , 'export'])->name('exportInvoice');
-	Route::post('invoice/import', [InvoiceController::class , 'import'])->name('importInvoice');
 	Route::get('item/export', [ItemController::class ,'export'])->name('exportItem');
 	Route::get('customers/export', [CustomerController::class ,'export'])->name('exportCustomer');
-	Route::post('customers/import', [CustomerController::class ,'import'])->name('importCustomer');
-	// Route::get('notifications', function () {
-	// 	return view('pages.notifications');
-	// })->name('notifications');
 
-	// Route::get('rtl-support', function () {
-	// 	return view('pages.language');
-	// })->name('language');
 
 });
 
@@ -55,3 +49,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
 });
 
+
+Route::prefix('data')->namespace('Data')->group(function () {
+	Route::get('/all' , [CustomerController::class, 'all']);
+	Route::get('/show/{customer}' , [CustomerController::class, 'show']);
+	Route::get('/company/details' , [CompanyDetailsController::class , 'details']);
+});

@@ -63,7 +63,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        return response()->json(['customer' => $customer]);
     }
 
     /**
@@ -123,5 +123,9 @@ class CustomerController extends Controller
         Excel::import(new CustomersImport,request()->file('file'));
            
         return redirect()->back();
+    }
+
+    public function all(){
+        return Customer::all();
     }
 }

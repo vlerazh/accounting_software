@@ -11,85 +11,17 @@
                 </div>
                 <div class="card-body">
                     <form action="/invoices" method="POST">
-                        @csrf
-                       <div class="input-group mb-4">
-                            <input type="date" class="form-control" name="invoice_date"  required >
-                            <input type="date" class="form-control" name="due_date"  required >
+                        {{-- @csrf --}}
+                        <div id="create-invoice">
+                            <create-invoice></create-invoice>
                         </div>
-                        <div class="input-group mb-4">
-                            <select name="customer_id">
-                                <option selected>-Select a Customer-</option>
-                                @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}">{{ $customer->name}}</option>
-                                @endforeach
-                            </select>
-                            
-                        </div>
-                        {{-- <div class="input-group mb-4">
-                            <select name="item_id">
-                                <option selected>-Select an Item-</option>
-                                @foreach ($items as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name}}</option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-                        {{-- @livewire('items') --}}
-                        <div class="card">
-                            <div class="card-header">
-                                Items
-                            </div>
-                    
-                            <div class="card-body">
-                                <table class="table" id="items_table">
-                                    <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {{-- @foreach ($orderItems as $index => $orderItems) --}}
-                                        <tr>
-                                            <td>
-                                                <select name="item_id" class="form-control" id="items">
-                                                    <option value="">-- choose item --</option>
-                                                    @foreach ($items as $item)
-                                                        <option value="{{ $item->id }}" >
-                                                            {{ $item->name }}                                        
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input type="number"
-                                                       name="quantity"
-                                                       class="form-control"
-                                                       id="quantity"/>
-                                                      
-                                            </td>
-                                            <td>
-                                                <input type="number" class="form-control" id="price" name="quantity">
-                                            </td>
-                                            <td>
-                                                {{-- <a href="#" wire:click.prevent="removeItem({{$index}})">Delete</a> --}}
-                                            </td>
-                                        </tr>
-                                    {{-- @endforeach --}}
-                                    </tbody>
-                                </table>
-                    
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <a class="btn btn-sm btn-secondary add_item">+ Add Another item</a>
-                                    </div>
-                                </div>
-                            </div>
+           
+                        <div class="input-group">
+                            <input type="submit" value="Cancel" class="btn btn-light">
+                            <input type="submit" value="Save" class="btn btn-success">
                         </div>
                     </div>
-                        <input type="submit" value="Cancel" class="btn btn-light">
-                        <input type="submit" value="Save" class="btn btn-success">
+               
                     </form>
                 </div>
             </div>
@@ -97,16 +29,31 @@
     </div>
 </div>
 </div>
-@if ($errors->any())
-<div>
-    @foreach ($errors->all() as $error )
-        <li>
-            {{ $error }}
-        </li>
-    @endforeach
-</div>
-@endif
+
+<!-- Modal -->
+
+    @if ($errors->any())
+    <div>
+        @foreach ($errors->all() as $error )
+            <li>
+                {{ $error }}
+            </li>
+        @endforeach
+    </div>
+    @endif
 @endsection
+
+@push('footer-scripts')
+    <script>
+        var createForm = new Vue({
+            el: '#create-invoice',
+            
+        })
+    </script>
+@endpush
+
+
+{{-- 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 var counter = 1;
@@ -132,4 +79,4 @@ $('.add_item').click(function(event){
     //     counter + '"/></td></tr>');
     // $('#items_table').append(newRow);
 });
-</script>
+</script> --}}
