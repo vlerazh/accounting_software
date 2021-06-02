@@ -15,7 +15,6 @@
                         <div id="create-invoice">
                             <create-invoice></create-invoice>
                         </div>
-           
                         <div class="input-group">
                             <input type="submit" value="Cancel" class="btn btn-light">
                             <input type="submit" value="Save" class="btn btn-success">

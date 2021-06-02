@@ -54,4 +54,6 @@ Route::prefix('data')->namespace('Data')->group(function () {
 	Route::get('/all' , [CustomerController::class, 'all']);
 	Route::get('/show/{customer}' , [CustomerController::class, 'show']);
 	Route::get('/company/details' , [CompanyDetailsController::class , 'details']);
+
+	Route::get('/all-items', [ItemController::class , 'all']);
 });

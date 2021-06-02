@@ -58,7 +58,7 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        return response()->json(['item' => $item]);
     }
 
     /**
@@ -106,5 +106,10 @@ class ItemController extends Controller
     public function export() 
     {
         return Excel::download(new ItemsExport, 'items.xlsx');
+    }
+
+    public function all(){
+        
+        return Item::all();
     }
 }
