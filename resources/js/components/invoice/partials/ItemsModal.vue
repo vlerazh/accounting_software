@@ -5,10 +5,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Select an Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-backdrop="false" data-toggle="modal" data-target="#itemsModal"  aria-label="Close">X</button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-backdrop="false" data-toggle="modal" data-target="#itemsModal"  aria-label="Close"></button>
                     </div>
                     <div class="modal-body" >
-                        <select class="form-select form-select-lg mb-3" name="customer_id" v-if="items" @change="getSelectedItem($event)">
+                        <select class="form-select  mb-3"  v-if="items" @change="getSelectedItem($event)">
                             <option selected>-Select an Item-</option>
                             <option v-for="item in items " 
                                     :key="item.id"
@@ -17,15 +17,15 @@
                         </select>
                           <div class="m-4">
                               <label for="">Sales Price</label><br>
-                            <input type="number" class="form-control" v-model="selectedItem.sales_price">
+                              <p class="price">{{ selectedItem.sales_price }} $</p>
                          </div>
                           <div class="m-4">
                               <label for="">Quantity</label><br>
-                            <input type="number" class="form-control" v-model="selectedItem.quantity">
+                            <input type="number" class="form-control" v-model="selectedItem.quantity" name="quantity">
                          </div>
                           <div class="m-4">
                               <label for="">Total</label><br>
-                                <span>{{ totalPrice }}</span>
+                                <p class="price">{{ totalPrice }} $</p>
                          </div>
                          <span class="btn btn-success" @click="addInvoiceItem">Add</span>
                     </div>
@@ -46,10 +46,7 @@ export default {
     data(){
         return{
             items: [],
-            selectedItem: {
-                sales_price: 0 ,
-                quantity: 1,
-            },
+            selectedItem: { },
 
         }
     },
@@ -61,13 +58,14 @@ export default {
         },
         getSelectedItem(event){
             axios.get('http://127.0.0.1:8000/items/' + event.target.value).then(response => {
-                console.log(response.data)
                 this.selectedItem = response.data.item
             })
         },
         addInvoiceItem(){
             this.$emit('selected-item',  this.selectedItem )
             this.selectedItem = {}
+            $('#itemsModal').toggle()
+            $('.modal-backdrop').hide()
         }
     },
     computed:{

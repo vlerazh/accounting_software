@@ -11,7 +11,7 @@
                 </div>
                 <div class="card-body">
                     <form action="/invoices" method="POST">
-                        {{-- @csrf --}}
+                        @csrf
                         <div id="create-invoice">
                             <create-invoice></create-invoice>
                         </div>

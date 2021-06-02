@@ -43,22 +43,35 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        $record = Invoice::latest()->first();
-        $expNum = explode('-', $record->invoice_no);
 
-        //check first day in a year
-        if ( date('l',strtotime(date('Y-01-01'))) ){
-            $nextInvoiceNumber = date('Y').'-0001';
-        } else {
-            //increase 1 with last invoice number
-            $nextInvoiceNumber = $expNum[0].'-'. $expNum[1]+1;
-        }
+        // dd($request->input('sub_total'));
+        // $record = Invoice::latest()->first();
+        // $expNum = explode('-', $record->invoice_no);
+
+        // //check first day in a year
+        // if ( date('l',strtotime(date('Y-01-01'))) ){
+        //     $nextInvoiceNumber = date('Y').'-0001';
+        // } else {
+        //     //increase 1 with last invoice number
+        //     $nextInvoiceNumber = $expNum[0].'-'. $expNum[1]+1;
+        // }
         $invoice = Invoice::create([
-            'invoice_no' => $nextInvoiceNumber,
+            'invoice_no' => 'invoice',
             'invoice_date'=> $request->input('invoice_date'),
             'due_date'=> $request->input('due_date'),
             'customer_id'=> $request->input('customer_id'),
+            'sub_total' => $request->input('sub_total'),
+            'discount' => $request->input('discount'),
+            'total' => $request->input('total')
         ]);
+
+        $itemIds = [
+            'item_id' => $request->input('item_id')
+        ];
+        $invoice->item()->attach(
+           $itemIds , ['quantity' => '2']
+         );
+        return redirect('/invoices');
     }
 
     /**

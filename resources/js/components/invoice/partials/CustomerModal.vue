@@ -5,10 +5,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Select a Customer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-backdrop="false" data-toggle="modal" data-target="#customersModal"  aria-label="Close">X</button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-backdrop="false" data-toggle="modal" data-target="#customersModal"  aria-label="Close"></button>
                     </div>
                     <div class="modal-body" >
-                        <select class="form-select form-select-lg mb-3" name="customer_id" v-if="customers" @change="getCustomer($event)">
+                        <select class="form-select  mb-3"  v-if="customers" @change="getCustomer($event)">
                             <option selected>-Select a Customer-</option>
                             <option v-for="customer in customers " 
                                     :key="customer.id"
@@ -42,9 +42,10 @@ export default {
         },
         getCustomer(event){
             axios.get('http://127.0.0.1:8000/customers/' + event.target.value).then(response => {
-                console.log(response.data)
                 this.$emit('customerSelected',  response.data.customer)
             })
+            $('#customersModal').toggle()
+            $('.modal-backdrop').toggle()
         }
     }
 

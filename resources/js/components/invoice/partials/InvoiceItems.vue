@@ -13,10 +13,13 @@
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
+                    <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody v-if="items">
-                    <tr v-for="item in items" :key="item.id" >
+                   
+                    <tr v-for="(item,index) in items" :key="index" >
+                         <input type="hidden" name="item_id" :value="item.id">
                         <td>
                             {{ item.name }}
                         </td>
@@ -24,10 +27,13 @@
                             {{ item.quantity }}        
                         </td>
                         <td>
-                           {{ item.sales_price }}
+                           {{ item.sales_price }} $
                         </td>
                         <td>
-                            {{ item.total }}
+                            {{ item.total }} $
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" @click.prevent="deleteItem(index)">Delete</button>
                         </td>
                     </tr>
 
@@ -36,19 +42,19 @@
             <hr>
             <div class="row">
                 <div class="col-xl-4 offset-9">
-                <label for="sub-total">Sub-Total</label>
-                <div class="col-sm-7" style="display:inline-block">
-                    <input type="number" class="form-control" id="sub-total">
-                </div> <br>
-                <label for="discount">Discount</label>
-                <div class="col-sm-7" style="display:inline-block">
-                    <input type="number" class="form-control" id="discount">
-                </div> <br>
-                <label for="total">Total</label>
-                <div class="col-sm-7" style="display:inline-block">
-                    <input type="number" class="form-control" id="total">
+                    <label for="sub-total">Sub-Total</label>
+                    <div class="col-sm-7" style="display:inline-block">
+                        <input class="form-control" name="sub_total" v-model="sub_total"/>
+                    </div> <br>
+                    <label for="discount">Discount</label>
+                    <div class="col-sm-7" style="display:inline-block">
+                        <input type="number" class="form-control" id="discount" name="discount"  v-model="discount">
+                    </div> <br> <br>
+                    <label for="total">Total</label>
+                    <div class="col-sm-7" style="display:inline-block">
+                          <input class="form-control" name="total" v-model="totalAmount"/>
+                    </div>
                 </div>
-            </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -67,7 +73,9 @@ export default {
     name: 'InvoiceItems',
     data(){
         return{
-            items:[]
+            items:[],
+            sub_total: 0,
+            discount: 0
         }
     },
     components:{
@@ -76,6 +84,23 @@ export default {
     methods:{
         selectedItem(item){
             this.items.push(item)
+            this.calculateTotals()
+        },
+        calculateTotals(){
+            let sub_total = 0
+            this.items.forEach((item) =>{
+                sub_total += item.total
+            })
+            this.sub_total = sub_total;
+        },
+        deleteItem(index){
+            return this.items.splice(index,1)
+        }
+    },
+    computed:{
+        totalAmount(){
+            return this.sub_total - (this.sub_total * (this.discount/100))
+
         }
     }
 }

@@ -1922,6 +1922,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2019,10 +2020,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/customers/' + event.target.value).then(function (response) {
-        console.log(response.data);
-
         _this2.$emit('customerSelected', response.data.customer);
       });
+      $('#customersModal').toggle();
+      $('.modal-backdrop').toggle();
     }
   }
 });
@@ -2104,12 +2105,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'InvoiceItems',
   data: function data() {
     return {
-      items: []
+      items: [],
+      sub_total: 0,
+      discount: 0
     };
   },
   components: {
@@ -2118,6 +2127,22 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     selectedItem: function selectedItem(item) {
       this.items.push(item);
+      this.calculateTotals();
+    },
+    calculateTotals: function calculateTotals() {
+      var sub_total = 0;
+      this.items.forEach(function (item) {
+        sub_total += item.total;
+      });
+      this.sub_total = sub_total;
+    },
+    deleteItem: function deleteItem(index) {
+      return this.items.splice(index, 1);
+    }
+  },
+  computed: {
+    totalAmount: function totalAmount() {
+      return this.sub_total - this.sub_total * (this.discount / 100);
     }
   }
 });
@@ -2184,10 +2209,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       items: [],
-      selectedItem: {
-        sales_price: 0,
-        quantity: 1
-      }
+      selectedItem: {}
     };
   },
   methods: {
@@ -2202,13 +2224,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/items/' + event.target.value).then(function (response) {
-        console.log(response.data);
         _this2.selectedItem = response.data.item;
       });
     },
     addInvoiceItem: function addInvoiceItem() {
       this.$emit('selected-item', this.selectedItem);
       this.selectedItem = {};
+      $('#itemsModal').toggle();
+      $('.modal-backdrop').hide();
     }
   },
   computed: {
@@ -38016,7 +38039,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control ",
-              attrs: { type: "text", name: "from" },
+              attrs: { type: "text", name: "company_name" },
               domProps: { value: _vm.company.name },
               on: {
                 input: function($event) {
@@ -38165,6 +38188,11 @@ var render = function() {
           _vm._v(" "),
           _vm.customer
             ? _c("div", { staticClass: "mb-4" }, [
+                _c("input", {
+                  attrs: { type: "hidden", name: "customer_id" },
+                  domProps: { value: _vm.customer.id }
+                }),
+                _vm._v(" "),
                 _c("label", { attrs: { for: "" } }, [_vm._v("Name")]),
                 _vm._v(" "),
                 _c("input", {
@@ -38177,7 +38205,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control ",
-                  attrs: { type: "text", name: "name" },
+                  attrs: { type: "text", name: "customer_name" },
                   domProps: { value: _vm.customer.name },
                   on: {
                     input: function($event) {
@@ -38364,8 +38392,7 @@ var render = function() {
                 ? _c(
                     "select",
                     {
-                      staticClass: "form-select form-select-lg mb-3",
-                      attrs: { name: "customer_id" },
+                      staticClass: "form-select  mb-3",
                       on: {
                         change: function($event) {
                           return _vm.getCustomer($event)
@@ -38410,21 +38437,17 @@ var staticRenderFns = [
         [_vm._v("Select a Customer")]
       ),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn-close",
-          attrs: {
-            type: "button",
-            "data-bs-dismiss": "modal",
-            "data-backdrop": "false",
-            "data-toggle": "modal",
-            "data-target": "#customersModal",
-            "aria-label": "Close"
-          }
-        },
-        [_vm._v("X")]
-      )
+      _c("button", {
+        staticClass: "btn-close",
+        attrs: {
+          type: "button",
+          "data-bs-dismiss": "modal",
+          "data-backdrop": "false",
+          "data-toggle": "modal",
+          "data-target": "#customersModal",
+          "aria-label": "Close"
+        }
+      })
     ])
   }
 ]
@@ -38465,8 +38488,13 @@ var render = function() {
             _vm.items
               ? _c(
                   "tbody",
-                  _vm._l(_vm.items, function(item) {
-                    return _c("tr", { key: item.id }, [
+                  _vm._l(_vm.items, function(item, index) {
+                    return _c("tr", { key: index }, [
+                      _c("input", {
+                        attrs: { type: "hidden", name: "item_id" },
+                        domProps: { value: item.id }
+                      }),
+                      _vm._v(" "),
                       _c("td", [
                         _vm._v(
                           "\r\n                            " +
@@ -38487,7 +38515,7 @@ var render = function() {
                         _vm._v(
                           "\r\n                           " +
                             _vm._s(item.sales_price) +
-                            "\r\n                        "
+                            " $\r\n                        "
                         )
                       ]),
                       _vm._v(" "),
@@ -38495,7 +38523,23 @@ var render = function() {
                         _vm._v(
                           "\r\n                            " +
                             _vm._s(item.total) +
-                            "\r\n                        "
+                            " $\r\n                        "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.deleteItem(index)
+                              }
+                            }
+                          },
+                          [_vm._v("Delete")]
                         )
                       ])
                     ])
@@ -38507,9 +38551,118 @@ var render = function() {
           _vm._v(" "),
           _c("hr"),
           _vm._v(" "),
-          _vm._m(1),
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-xl-4 offset-9" }, [
+              _c("label", { attrs: { for: "sub-total" } }, [
+                _vm._v("Sub-Total")
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "col-sm-7",
+                  staticStyle: { display: "inline-block" }
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.sub_total,
+                        expression: "sub_total"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { name: "sub_total" },
+                    domProps: { value: _vm.sub_total },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.sub_total = $event.target.value
+                      }
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "discount" } }, [_vm._v("Discount")]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "col-sm-7",
+                  staticStyle: { display: "inline-block" }
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.discount,
+                        expression: "discount"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "number", id: "discount", name: "discount" },
+                    domProps: { value: _vm.discount },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.discount = $event.target.value
+                      }
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "total" } }, [_vm._v("Total")]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "col-sm-7",
+                  staticStyle: { display: "inline-block" }
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.totalAmount,
+                        expression: "totalAmount"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { name: "total" },
+                    domProps: { value: _vm.totalAmount },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.totalAmount = $event.target.value
+                      }
+                    }
+                  })
+                ]
+              )
+            ])
+          ]),
           _vm._v(" "),
-          _vm._m(2)
+          _vm._m(1)
         ])
       ]),
       _vm._v(" "),
@@ -38531,58 +38684,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Price")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Total")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-xl-4 offset-9" }, [
-        _c("label", { attrs: { for: "sub-total" } }, [_vm._v("Sub-Total")]),
+        _c("th", [_vm._v("Total")]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-sm-7", staticStyle: { display: "inline-block" } },
-          [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "number", id: "sub-total" }
-            })
-          ]
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "discount" } }, [_vm._v("Discount")]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-sm-7", staticStyle: { display: "inline-block" } },
-          [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "number", id: "discount" }
-            })
-          ]
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "total" } }, [_vm._v("Total")]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-sm-7", staticStyle: { display: "inline-block" } },
-          [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "number", id: "total" }
-            })
-          ]
-        )
+        _c("th", [_vm._v("Actions")])
       ])
     ])
   },
@@ -38648,8 +38752,7 @@ var render = function() {
                 ? _c(
                     "select",
                     {
-                      staticClass: "form-select form-select-lg mb-3",
-                      attrs: { name: "customer_id" },
+                      staticClass: "form-select  mb-3",
                       on: {
                         change: function($event) {
                           return _vm.getSelectedItem($event)
@@ -38677,31 +38780,9 @@ var render = function() {
                 _c("label", { attrs: { for: "" } }, [_vm._v("Sales Price")]),
                 _c("br"),
                 _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.selectedItem.sales_price,
-                      expression: "selectedItem.sales_price"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "number" },
-                  domProps: { value: _vm.selectedItem.sales_price },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.selectedItem,
-                        "sales_price",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
+                _c("p", { staticClass: "price" }, [
+                  _vm._v(_vm._s(_vm.selectedItem.sales_price) + " $")
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "m-4" }, [
@@ -38718,7 +38799,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "number" },
+                  attrs: { type: "number", name: "quantity" },
                   domProps: { value: _vm.selectedItem.quantity },
                   on: {
                     input: function($event) {
@@ -38739,7 +38820,9 @@ var render = function() {
                 _c("label", { attrs: { for: "" } }, [_vm._v("Total")]),
                 _c("br"),
                 _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.totalPrice))])
+                _c("p", { staticClass: "price" }, [
+                  _vm._v(_vm._s(_vm.totalPrice) + " $")
+                ])
               ]),
               _vm._v(" "),
               _c(
@@ -38769,21 +38852,17 @@ var staticRenderFns = [
         [_vm._v("Select an Item")]
       ),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn-close",
-          attrs: {
-            type: "button",
-            "data-bs-dismiss": "modal",
-            "data-backdrop": "false",
-            "data-toggle": "modal",
-            "data-target": "#itemsModal",
-            "aria-label": "Close"
-          }
-        },
-        [_vm._v("X")]
-      )
+      _c("button", {
+        staticClass: "btn-close",
+        attrs: {
+          type: "button",
+          "data-bs-dismiss": "modal",
+          "data-backdrop": "false",
+          "data-toggle": "modal",
+          "data-target": "#itemsModal",
+          "aria-label": "Close"
+        }
+      })
     ])
   }
 ]

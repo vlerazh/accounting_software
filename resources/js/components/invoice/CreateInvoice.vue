@@ -20,7 +20,7 @@
             <hr>
             <div class="mb-4">
                 <label for="">From</label>
-                <input type="text" class="form-control " name="from"  v-model="company.name"  >
+                <input type="text" class="form-control " name="company_name"  v-model="company.name"  >
             </div>
             <div class="mb-4">
                 <label for="">Adress</label>
@@ -48,8 +48,9 @@
                 </h5>
                 <hr>
                 <div class="mb-4" v-if="customer">
+                    <input type="hidden" :value="customer.id" name="customer_id">
                     <label for="">Name</label>
-                    <input type="text" class="form-control " name="name"  v-model="customer.name">
+                    <input type="text" class="form-control " name="customer_name"  v-model="customer.name">
                 </div>
                 <div class="mb-4">
                     <label for="">Email</label>
