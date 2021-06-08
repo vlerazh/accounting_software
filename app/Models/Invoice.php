@@ -11,7 +11,7 @@ class Invoice extends Model
 
     protected $fillable = ['invoice_no', 'invoice_date', 'due_date','sub_total','discount','total','customer_id'];
 
-    public function item(){
+    public function items(){
         return $this->belongsToMany(Item::class,'invoices_items')->withPivot('quantity');;
     }
 }

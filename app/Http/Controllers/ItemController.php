@@ -44,7 +44,9 @@ class ItemController extends Controller
             'name' => $request->input('name'),
             'sales_price' => $request->input('sales_price'),
             'purchase_price' => $request->input('purchase_price'),
-            'category_id' => $request->input('category_id')
+            'total_quantity' => $request->input('total_quantity'),
+            'category_id' => $request->input('category_id'),
+           
         ]);
 
         return redirect('/items');
@@ -86,6 +88,7 @@ class ItemController extends Controller
             'name' => $request->input('name'),
             'sales_price' => $request->input('sales_price'),
             'purchase_price' => $request->input('purchase_price'),
+            'total_quantity' => $request->input('total_quantity'),
             'category_id' => $request->input('category_id')
         ]);
 

@@ -112,7 +112,7 @@
                       </ul>
                     </div>
                   </li>
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a class="nav-link" href="{{ route('table') }}">
                       <i class="material-icons">content_paste</i>
                         <p>{{ __('Table List') }}</p>
@@ -153,7 +153,7 @@
                       <i class="material-icons text-white">unarchive</i>
                       <p>{{ __('Upgrade to PRO') }}</p>
                     </a>
-                  </li>
+                  </li> --}}
                 </ul>
               </div>
             </div>
@@ -268,7 +268,7 @@
                           2020-02-24
                         </td>
                         <td class="td-actions text-right">
-                                                        <a rel="tooltip" class="btn btn-success btn-link" href="#" data-original-title="" title="">
+                          <a rel="tooltip" class="btn btn-success btn-link" href="#" data-original-title="" title="">
                               <i class="material-icons">edit</i>
                               <div class="ripple-container"></div>
                             </a>

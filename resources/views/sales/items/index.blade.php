@@ -32,6 +32,7 @@
                     <th>Category</th>
                     <th>Sale Price</th>
                     <th>Purchase Price</th>
+                    <th>Total Quantity</th>
                     <th>Actions</th>
                   </thead>
                   <tbody>
@@ -42,6 +43,7 @@
                       <td>{{ $item->category->name }}</td>
                       <td>{{ $item->sales_price }}</td>
                       <td>{{ $item->purchase_price }}</td>
+                      <td>{{ $item->total_quantity }}</td>
                       <td>
                         <a href="/items/{{$item->id}}/edit">
                           <span class="material-icons">edit</span>

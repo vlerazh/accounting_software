@@ -12,7 +12,8 @@
                             <option selected>-Select an Item-</option>
                             <option v-for="item in items " 
                                     :key="item.id"
-                                    :value="item.id"
+                                    :value="item.id" 
+                                    :disabled="item.total_quantity == 0"
                                     >{{ item.name }}</option>
                         </select>
                           <div class="m-4">
@@ -20,13 +21,14 @@
                               <p class="price">{{ selectedItem.sales_price }} $</p>
                          </div>
                           <div class="m-4">
-                              <label for="">Quantity</label><br>
+                            <label for="">Quantity</label><br>
                             <input type="number" class="form-control" v-model="selectedItem.quantity" name="quantity">
                          </div>
                           <div class="m-4">
                               <label for="">Total</label><br>
                                 <p class="price">{{ totalPrice }} $</p>
                          </div>
+                         <p v-if="message" class="text-center" style="color:red">{{  message }}</p>
                          <span class="btn btn-success" @click="addInvoiceItem">Add</span>
                     </div>
                   
@@ -40,13 +42,20 @@
 import axios from 'axios'
 export default {
     name: 'ItemsModal',
+    props: ['invoice_id'],
     mounted(){
         this.getItems()
     },
     data(){
         return{
             items: [],
-            selectedItem: { },
+            selectedItem: {
+                sales_price: 0,
+                quantity: 1,
+                total_quantity: 0,
+                total: 0,
+            },
+            message: null
 
         }
     },
@@ -58,14 +67,31 @@ export default {
         },
         getSelectedItem(event){
             axios.get('http://127.0.0.1:8000/items/' + event.target.value).then(response => {
-                this.selectedItem = response.data.item
+                this.selectedItem.name = response.data.item.name
+                this.selectedItem.sales_price = response.data.item.sales_price
+                this.selectedItem.total_quantity = response.data.item.total_quantity
             })
         },
         addInvoiceItem(){
-            this.$emit('selected-item',  this.selectedItem )
-            this.selectedItem = {}
-            $('#itemsModal').toggle()
-            $('.modal-backdrop').hide()
+            if(this.checkQuantity()){
+                axios.post('storeInvoice' , {item: this.selectedItem , invoice_id:this.invoice_id}).then(response=>{
+                    console.log(response);
+                })
+                this.$emit('selected-item',  this.selectedItem )
+                this.selectedItem.sales_price = 0
+                this.selectedItem.total_quantity = 0
+                this.selectedItem.quantity = 1
+                this.message = null
+            }else{
+                this.message = 'Only ' + this.selectedItem.total_quantity + ' items in stock' 
+            }
+ 
+        },
+            checkQuantity(){
+            if (this.selectedItem.total_quantity < this.selectedItem.quantity){
+               return false
+            }
+            return true
         }
     },
     computed:{
@@ -74,7 +100,8 @@ export default {
             total += (this.selectedItem.sales_price * this.selectedItem.quantity)
             this.selectedItem.total = total
             return total
-        }
+        },
+      
     }
 
 }

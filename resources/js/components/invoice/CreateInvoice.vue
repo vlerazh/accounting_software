@@ -4,15 +4,15 @@
         <div class="col-xl-5">
             <div class="mb-4">
                 <label for="">Invoice Number</label>
-                <input type="text" class="form-control " name="invoice_no"  disabled value="invoice_no" >
+                <input type="text" class="form-control " name="invoice_no"  disabled v-model="data.invoice_no">
             </div>
             <div class="mb-4">
                 <label for="">Invoice Date</label><br>
-                <input type="date" class="form-control " name="invoice_date"  required >
+                <input type="date" class="form-control " name="invoice_date"  required  v-model="data.invoice_date">
             </div>
             <div class=" mb-4">
                 <label for="">Due Date</label><br>
-                <input type="date" class="form-control " name="due_date"  required > 
+                <input type="date" class="form-control " name="due_date"  required v-model="data.due_date"> 
             </div>
         </div>
         <div class="col-xl-5 offset-1">
@@ -48,7 +48,6 @@
                 </h5>
                 <hr>
                 <div class="mb-4" v-if="customer">
-                    <input type="hidden" :value="customer.id" name="customer_id">
                     <label for="">Name</label>
                     <input type="text" class="form-control " name="customer_name"  v-model="customer.name">
                 </div>
@@ -67,7 +66,11 @@
         </div>
     </div>
     <CustomerModal @customerSelected="selectedCustomer"/>
-    <InvoiceItems />
+       <div class="input-group">
+            <input type="submit" value="Cancel" class="btn btn-light">
+            <input type="submit" value="Save" class="btn btn-success" @click.prevent="saveInvoice()">
+        </div>
+    <InvoiceItems v-if="showItems" :invoice_id="invoice_id"/>
 </div>
 
 </template>
@@ -81,7 +84,18 @@ export default {
     data(){
         return{
             customer: {},
-            company: []
+            company: [],
+            data:{
+                invoice_no: null,
+                invoice_date: null,
+                due_date: null,
+                customer_id: null,
+            },
+            invoice_id: null,
+            showItems: false,
+            counter: 0,
+    
+
         }
     },
     components:
@@ -90,10 +104,12 @@ export default {
         InvoiceItems:InvoiceItems
     },        
     mounted(){
+        this.generateInvoiceNumber()
         this.getCompany()
     },
     methods:{
         selectedCustomer(customer){
+            this.data.customer_id = customer.id
             this.customer = customer
         },
         clearCustomer(){
@@ -103,6 +119,21 @@ export default {
             axios.get('http://127.0.0.1:8000/data/company/details').then(response =>{
                 this.company = response.data
             })
+        },
+        saveInvoice(){
+            axios.post('http://127.0.0.1:8000/invoices/', this.data ).then(response => {
+                this.invoice_id = response.data;
+                this.showItems = !this.showItems;
+                this.counter++
+               
+            })
+        },
+        generateInvoiceNumber(){
+            const getId = (num) => {
+                return num.toString().padStart(6, "0")
+            };
+            console.log(this.counter)
+            this.data.invoice_no = getId(this.counter);
         }
     }
 }

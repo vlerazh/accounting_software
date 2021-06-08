@@ -21,6 +21,9 @@
                             <input type="text" class="form-control" name="purchase_price" value="{{ $item->purchase_price }}" required >
                         </div>
                         <div class="input-group mb-4">
+                            <input type="text" class="form-control" placeholder="Enter total quantity" name="total_quantity" required >
+                        </div>
+                        <div class="input-group mb-4">
                             <select class="form-select" aria-label="Default select example" name="category_id">
                                 <option selected>{{ $item->category->name }}</option>
                                 @foreach ($categories as $category )

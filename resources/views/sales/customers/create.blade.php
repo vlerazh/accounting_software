@@ -23,6 +23,10 @@
                          
                             <input type="text" class="form-control" name="address" placeholder="Enter address">
                         </div>
+                        <div class="input-group mb-4">
+                            <input type="checkbox" name="can_login" >
+                            <label class="ml-3">Can Log in?</label>
+                        </div>
                         <input type="submit" value="Cancel" class="btn btn-light">
                         <input type="submit" value="Save" class="btn btn-success">
                     </form>

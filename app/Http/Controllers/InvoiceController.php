@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\Customer;
 use App\Models\Item;
+use App\Models\InvoicesItems;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\InvoiceExport;
@@ -44,36 +45,32 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request->input('sub_total'));
-        // $record = Invoice::latest()->first();
-        // $expNum = explode('-', $record->invoice_no);
-
-        // //check first day in a year
-        // if ( date('l',strtotime(date('Y-01-01'))) ){
-        //     $nextInvoiceNumber = date('Y').'-0001';
-        // } else {
-        //     //increase 1 with last invoice number
-        //     $nextInvoiceNumber = $expNum[0].'-'. $expNum[1]+1;
-        // }
         $invoice = Invoice::create([
-            'invoice_no' => 'invoice',
+            'invoice_no' => $request->input('invoice_no'),
             'invoice_date'=> $request->input('invoice_date'),
             'due_date'=> $request->input('due_date'),
             'customer_id'=> $request->input('customer_id'),
-            'sub_total' => $request->input('sub_total'),
-            'discount' => $request->input('discount'),
-            'total' => $request->input('total')
+            'sub_total' => 0,
+            'discount' => 0,
+            'total' => 0,
         ]);
 
-        $itemIds = [
-            'item_id' => $request->input('item_id')
-        ];
-        $invoice->item()->attach(
-           $itemIds , ['quantity' => '2']
-         );
-        return redirect('/invoices');
+        
+        return $invoice->id;
     }
 
+    public function storeInvoice(Request $request){
+
+        $invoice = $request->invoice_id;
+        $item = $request->item_id;
+        $invoice_items = InvoicesItems::create([
+            'invoice_id'=> $invoice,
+            'item_id'=> $item,
+            'quantity'=>$item->quantity
+        ]);
+
+        // dd($items);
+    }
     /**
      * Display the specified resource.
      *
@@ -105,7 +102,16 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
-        //
+        $invoice->update([
+            'invoice_no' => 'invoice',
+            'invoice_date'=> $request->input('invoice_date'),
+            'due_date'=> $request->input('due_date'),
+            'customer_id'=> $request->input('customer_id'),
+            'sub_total' => $request->input('sub_total'),
+            'discount' => $request->input('discount'),
+            'total' => $request->input('total')
+        ]);
+
     }
 
     /**
@@ -116,7 +122,8 @@ class InvoiceController extends Controller
      */
     public function destroy(Invoice $invoice)
     {
-        //
+        $invoice->delete();
+        return redirect('/invoices');
     }
     public function export() 
     {

@@ -19,7 +19,6 @@
                 <tbody v-if="items">
                    
                     <tr v-for="(item,index) in items" :key="index" >
-                         <input type="hidden" name="item_id" :value="item.id">
                         <td>
                             {{ item.name }}
                         </td>
@@ -63,14 +62,20 @@
             </div>
         </div>
     </div>
-    <ItemsModal @selected-item="selectedItem"/>
+    <ItemsModal @selected-item="selectedItem" :invoice_id="invoice_id"/>
+        <div class="input-group">
+            <input type="submit" value="Cancel" class="btn btn-light">
+            <input type="submit" value="Save" class="btn btn-success" @click.prevent="saveItems()">
+        </div>
 </div>
 </template>
 
 <script>
+import axios from 'axios'
 import ItemsModal from '../partials/ItemsModal'
 export default {
     name: 'InvoiceItems',
+    props:['invoice_id'],
     data(){
         return{
             items:[],
@@ -95,12 +100,16 @@ export default {
         },
         deleteItem(index){
             return this.items.splice(index,1)
-        }
+        },
+        saveItems(){
+            // console.log(this.invoice_id)
+        //     axios.post('http://127.0.0.1:8000/data/storeItem/' , this.items)
+        //         .then(response => console.log(response.data))
+         }
     },
     computed:{
         totalAmount(){
             return this.sub_total - (this.sub_total * (this.discount/100))
-
         }
     }
 }

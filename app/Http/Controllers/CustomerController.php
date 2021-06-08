@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\CustomersExport; 
@@ -51,7 +53,13 @@ class CustomerController extends Controller
             'phone'=> $request->input('phone'),
             'address'=> $request->input('address'),
         ]);
-
+        if($request->input('can_login')){
+            User::create([
+                'name'=>$request->input('name'),
+                'email'=>$request->input('email'),
+                'password'=> Hash::make('password')
+            ]);
+        }
         return redirect('/customers');
     }
 
@@ -98,7 +106,7 @@ class CustomerController extends Controller
             'phone'=> $request->input('phone'),
             'address'=> $request->input('address'),
         ]);
-        
+     
         return redirect('/customers'); 
     }
 
