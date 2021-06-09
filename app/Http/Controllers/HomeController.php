@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Invoice;
 
 class HomeController extends Controller
 {
@@ -19,8 +20,20 @@ class HomeController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
-    {
-        return view('dashboard');
+    public function index(){
+
+        $totalIncome = $this->caculateIncome();
+        return view('dashboard')->with('totalIncome', $totalIncome);
+    }
+
+    public function caculateIncome(){
+
+        $invoices = Invoice::all();
+        $total = 0;
+        foreach($invoices as $invoice){
+            $total += $invoice->total;
+        };
+
+        return  number_format((float)$total, 2, '.', '');
     }
 }
