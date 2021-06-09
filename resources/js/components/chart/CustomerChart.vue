@@ -31,8 +31,8 @@
                             datasets: [{
                                     label: "Customers",
                                     data: response.data.customer_count,
-                                    backgroundColor: "rgba(54,73,93,.5)",
-                                    borderColor: "#36495d",
+                                    backgroundColor: "rgb(175, 108, 186)",
+                                    borderColor: "rgb(156 39 176)",
                                     borderWidth: 3
                                 },
                             ]

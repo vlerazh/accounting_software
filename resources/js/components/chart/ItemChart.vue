@@ -1,7 +1,7 @@
 <template>
     <div >
         <div class="panel-body">
-            <canvas id="myChart" height="100"></canvas>
+            <canvas id="itemChart" height="100"></canvas>
         </div>
     </div>
 </template>
@@ -10,7 +10,7 @@
     import Chart from 'chart.js'
     import axios from 'axios'
     export default {
-        name:'CustomerChart',
+        name:'ItemChart',
         data() {
             return {
                
@@ -21,18 +21,19 @@
         },
         methods: {
             drawChart() {
-                axios.get('http://127.0.0.1:8000/chartCustomers').then(response=>{
-                     let ctx = document.getElementById("myChart");
+                axios.get('http://127.0.0.1:8000/chartItems').then(response=>{
+                    console.log(response.data)
+                     let ctx = document.getElementById("itemChart");
                 
                     let myChart = new Chart(ctx, {
-                        type: 'line',
+                        type: 'bar',
                         data: {
-                            labels: response.data.months,
+                            labels: response.data.names,
                             datasets: [{
-                                    label: "Customers",
-                                    data: response.data.customer_count,
-                                    backgroundColor: "rgba(54,73,93,.5)",
-                                    borderColor: "#36495d",
+                                    label: "Items",
+                                    data: response.data.total_quantity,
+                                    backgroundColor: "rgba(255,167,38,0.5)",
+                                    borderColor: "rgb(255,167,38)",
                                     borderWidth: 3
                                 },
                             ]

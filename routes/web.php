@@ -29,6 +29,7 @@ Auth::routes();
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
 Route::get('/chartCustomers', [ChartController::class, 'getMonthlyCustomersData']);
+Route::get('/chartItems', [ChartController::class, 'getItemData']);
 
 Route::group(['middleware' => 'auth'], function () {
 

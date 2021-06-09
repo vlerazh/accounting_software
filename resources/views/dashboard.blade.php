@@ -18,7 +18,7 @@
             <div class="card-footer"></div>
           </div>
         </div>
-        {{-- <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="col-lg-3 col-md-6 col-sm-6">
           <div class="card card-stats">
             <div class="card-header card-header-success card-header-icon">
               <div class="card-icon">
@@ -50,7 +50,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-6">
+        {{-- <div class="col-lg-3 col-md-6 col-sm-6">
           <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
               <div class="card-icon">
@@ -118,7 +118,7 @@
           </div>
         </div>
       </div> --}}
-      <div class="row">
+      <div class="row"  id="chart">
         <div class="col-lg-6 col-md-12">
           <div class="card">
             <div class="card-header card-header-tabs card-header-primary">
@@ -148,7 +148,7 @@
                 </div>
               </div>
             </div>
-            <div class="card-body" id="chart">
+            <div class="card-body">
                 <customer-chart> </customer-chart>
             </div>
           </div>
@@ -156,10 +156,11 @@
         <div class="col-lg-6 col-md-12">
           <div class="card">
             <div class="card-header card-header-warning">
-              <h4 class="card-title">Employees Stats</h4>
-              <p class="card-category">New employees on 15th September, 2016</p>
+              <h4 class="card-title">Item Stats</h4>
+              <p class="card-category">Item quantity</p>
             </div>
-            <div class="card-body table-responsive">
+            <item-chart> </item-chart>
+            {{-- <div class="card-body table-responsive">
               <table class="table table-hover">
                 <thead class="text-warning">
                   <th>ID</th>
@@ -194,7 +195,7 @@
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </div> --}}
           </div>
         </div>
       </div>

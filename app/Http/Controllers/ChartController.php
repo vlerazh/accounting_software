@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use App\Models\Item;
 
 class ChartController extends Controller
 {
@@ -54,10 +55,21 @@ class ChartController extends Controller
     }
 
 
-    public function getMonthlyItem($month){
-        $monthly_items = Item::whereMonth('created_at', $month)->get()->count();
-
-        return $monthly_items;
-
+    public function getItemData(){
+        $items = Item::all();
+        $items_name = array();
+        $items_total_quantity = array();
+        foreach($items as $item){
+            array_push($items_name, $item->name);
+            array_push($items_total_quantity, $item->total_quantity);
+        }
+        $max = max($items_total_quantity);
+        $items_data = array(
+            'names' => $items_name,
+            'total_quantity' => $items_total_quantity,
+            'max' => $max
+        );
+       
+        return $items_data;
     }
 }
