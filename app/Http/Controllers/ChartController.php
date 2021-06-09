@@ -35,6 +35,7 @@ class ChartController extends Controller
         $monthly_cusomers_count_array = array();
         $month_name_array = array();
         $month_array = $this->getAllMonths();
+
         if(! empty($month_array)){
             foreach($month_array as $month_no => $month_name){
                 $monthly_customers_count = $this->getMonthlyCustomers($month_no);
@@ -42,10 +43,21 @@ class ChartController extends Controller
                 array_push($month_name_array, $month_name);
             }
         }
+        $max_no = max($monthly_cusomers_count_array);
+        $max = round(($max_no + 10/2) / 10 )* 10;
         $monthly_customer_data = array(
             'months' => $month_name_array,
-            'customer_count' => $monthly_cusomers_count_array
+            'customer_count' => $monthly_cusomers_count_array,
+            'max' => $max
         );
         return $monthly_customer_data;
+    }
+
+
+    public function getMonthlyItem($month){
+        $monthly_items = Item::whereMonth('created_at', $month)->get()->count();
+
+        return $monthly_items;
+
     }
 }

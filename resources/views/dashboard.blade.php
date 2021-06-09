@@ -15,12 +15,10 @@
                 <small>€</small>
               </h3>
             </div>
-            <div class="card-footer">
-             
-            </div>
+            <div class="card-footer"></div>
           </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-6">
+        {{-- <div class="col-lg-3 col-md-6 col-sm-6">
           <div class="card card-stats">
             <div class="card-header card-header-success card-header-icon">
               <div class="card-icon">
@@ -67,7 +65,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> --}}
       </div>
       {{-- <div class="row">
         <div class="col-md-4">
@@ -126,8 +124,8 @@
             <div class="card-header card-header-tabs card-header-primary">
               <div class="nav-tabs-navigation">
                 <div class="nav-tabs-wrapper">
-                  <span class="nav-tabs-title">Tasks:</span>
-                  <ul class="nav nav-tabs" data-tabs="tabs">
+                  <span class="nav-tabs-title">Monthly Customers:</span>
+                  {{-- <ul class="nav nav-tabs" data-tabs="tabs">
                     <li class="nav-item">
                       <a class="nav-link active" href="#profile" data-toggle="tab">
                         <i class="material-icons">bug_report</i> Bugs
@@ -146,7 +144,7 @@
                         <div class="ripple-container"></div>
                       </a>
                     </li>
-                  </ul>
+                  </ul> --}}
                 </div>
               </div>
             </div>
