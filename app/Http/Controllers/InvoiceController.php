@@ -60,16 +60,23 @@ class InvoiceController extends Controller
     }
 
     public function storeInvoice(Request $request){
+        
+        $invoice_id = $request->get('invoice_id');
+        $item = Item::where('name','=',$request->get('name'))->first();
+        $invoice = Invoice::where('id', '=' ,$invoice_id)->first();
+        $invoice->items()->attach($item->id, ['quantity' => $request->get('quantity')]);
+    }
 
-        $invoice = $request->invoice_id;
-        $item = $request->item_id;
-        $invoice_items = InvoicesItems::create([
-            'invoice_id'=> $invoice,
-            'item_id'=> $item,
-            'quantity'=>$item->quantity
+    public function editInvoice(Request $request , $invoice_id){
+
+        $invoice = Invoice::where('id', '=', $invoice_id)->first();
+        $invoice->update([
+            'sub_total' => $request->get('sub_total'),
+            'discount' => $request->get('discount'),
+            'total' => $request->get('total')
         ]);
 
-        // dd($items);
+        return redirect('sales.invoices.index');
     }
     /**
      * Display the specified resource.
@@ -79,7 +86,10 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
-        return view('sales.invoices.show')->with('invoice', $invoice);
+        $customer = Customer::where('id', '=', $invoice->customer_id)->first();
+        $items = Invoice::find($invoice->id)->items;
+      
+        return view('sales.invoices.show', compact('invoice', 'customer', 'items'));
     }
 
     /**

@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('item/export', [ItemController::class ,'export'])->name('exportItem');
 	Route::get('customers/export', [CustomerController::class ,'export'])->name('exportCustomer');
 
-	Route::post('storeInvoice', [InvoiceController::class , 'storeInvoice']);
+
 });
 
 Route::group(['middleware' => 'auth'], function () {
@@ -58,5 +58,6 @@ Route::prefix('data')->namespace('Data')->group(function () {
 	Route::get('/show/{customer}' , [CustomerController::class, 'show']);
 	Route::get('/company/details' , [CompanyDetailsController::class , 'details']);
 	Route::get('/all-items', [ItemController::class , 'all']);
-	
+	Route::post('storeInvoice', [InvoiceController::class , 'storeInvoice']);
+	Route::put('editInvoice/{id}', [InvoiceController::class , 'editInvoice']);
 });

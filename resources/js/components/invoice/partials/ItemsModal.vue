@@ -54,6 +54,7 @@ export default {
                 quantity: 1,
                 total_quantity: 0,
                 total: 0,
+                invoice_id: this.invoice_id
             },
             message: null
 
@@ -74,14 +75,19 @@ export default {
         },
         addInvoiceItem(){
             if(this.checkQuantity()){
-                axios.post('storeInvoice' , {item: this.selectedItem , invoice_id:this.invoice_id}).then(response=>{
+                axios.post('http://127.0.0.1:8000/data/storeInvoice/' , this.selectedItem).then(response=>{
                     console.log(response);
+                }).catch(err => {
+                    console.log(err.message)
                 })
                 this.$emit('selected-item',  this.selectedItem )
                 this.selectedItem.sales_price = 0
                 this.selectedItem.total_quantity = 0
                 this.selectedItem.quantity = 1
                 this.message = null
+                $('.form-select').val('-Select an Item-')
+                //  $('#itemsModal').toggle()
+                // $('.modal-backdrop').toggle()
             }else{
                 this.message = 'Only ' + this.selectedItem.total_quantity + ' items in stock' 
             }

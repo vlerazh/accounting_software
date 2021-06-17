@@ -14,8 +14,8 @@
                         </div>
 
                         <div class="col-md-6 text-right">
-                            <p class="font-weight-bold mb-1">Invoice 0001</p>
-                            <p class="text-muted">Due to: </p>
+                            <p class="font-weight-bold mb-1">Invoice {{ $invoice->invoice_no }}</p>
+                            <p class="text-muted">Due to: {{ $invoice->due_date }}</p>
                         </div>
                     </div>
 
@@ -24,10 +24,10 @@
                     <div class="row pb-5 p-5">
                         <div class="col-md-6">
                             <p class="font-weight-bold mb-4">Client Information</p>
-                            <p class="mb-1">Name</p>
-                            <p class="mb-1">Phone</p>
-                            <p class="mb-1">Email</p>
-                            <p class="mb-1">Address</p>
+                            <p class="mb-1">Name: {{ $customer->name }}</p>
+                            <p class="mb-1">Phone: {{ $customer->phone }}</p>
+                            <p class="mb-1">Email: {{ $customer->email }}</p>
+                            <p class="mb-1">Address: {{ $customer->address }}</p>
                         </div>
 
                         <div class="col-md-6 text-right">
@@ -52,13 +52,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Item</td>
-                                        <td>Item</td>
-                                        <td>Item</td>
-                                        <td>Item</td>
-                                        <td>Item</td>
-                                    </tr>
+                                    @foreach ($items as $item )
+                                        <tr>
+                                            <td>{{ $item->id }}</td>
+                                            <td>{{ $item->name }}</td>
+                                            <td>{{ $item->pivot->quantity }}</td>
+                                            <td>{{ $item->sales_price }}</td>
+                                            <td>{{ $item->pivot->quantity * $item->sales_price }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -67,17 +69,17 @@
                     <div class="d-flex flex-row-reverse bg-dark text-white p-4">
                         <div class="py-3 px-5 text-right">
                             <div class="mb-2">Grand Total</div>
-                            <div class="h2 font-weight-light">15</div>
+                            <div class="h2 font-weight-light">{{ $invoice->total }}</div>
                         </div>
 
                         <div class="py-3 px-5 text-right">
                             <div class="mb-2">Discount</div>
-                            <div class="h2 font-weight-light">5 %</div>
+                            <div class="h2 font-weight-light">{{ $invoice->discount }} %</div>
                         </div>
 
                         <div class="py-3 px-5 text-right">
-                            <div class="mb-2">Sub - Total amount</div>
-                            <div class="h2 font-weight-light">15</div>
+                            <div class="mb-2">Sub Total amount</div>
+                            <div class="h2 font-weight-light">{{ $invoice->sub_total }}</div>
                         </div>
                     </div>
                 </div>

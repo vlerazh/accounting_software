@@ -102,9 +102,15 @@ export default {
             return this.items.splice(index,1)
         },
         saveItems(){
-            // console.log(this.invoice_id)
-        //     axios.post('http://127.0.0.1:8000/data/storeItem/' , this.items)
-        //         .then(response => console.log(response.data))
+            console.log(this.sub_total)
+            console.log(this.discount)
+            console.log(this.totalAmount)
+            axios.put('http://127.0.0.1:8000/data/editInvoice/'+ this.invoice_id, {
+                sub_total: this.sub_total,
+                discount: this.discount,
+                total: this.totalAmount
+            })
+                .then(response => console.log(response.data))
          }
     },
     computed:{
