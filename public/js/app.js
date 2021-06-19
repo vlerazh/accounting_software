@@ -2313,16 +2313,16 @@ __webpack_require__.r(__webpack_exports__);
       return this.items.splice(index, 1);
     },
     saveItems: function saveItems() {
-      console.log(this.sub_total);
-      console.log(this.discount);
-      console.log(this.totalAmount);
       axios__WEBPACK_IMPORTED_MODULE_0___default().put('http://127.0.0.1:8000/data/editInvoice/' + this.invoice_id, {
         sub_total: this.sub_total,
         discount: this.discount,
         total: this.totalAmount
       }).then(function (response) {
         return console.log(response.data);
+      })["catch"](function (err) {
+        return console.log(err.message);
       });
+      window.location = "/invoices";
     }
   },
   computed: {
@@ -2398,6 +2398,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       items: [],
       selectedItem: {
+        name: '',
         sales_price: 0,
         quantity: 1,
         total_quantity: 0,
@@ -2422,22 +2423,29 @@ __webpack_require__.r(__webpack_exports__);
         _this2.selectedItem.name = response.data.item.name;
         _this2.selectedItem.sales_price = response.data.item.sales_price;
         _this2.selectedItem.total_quantity = response.data.item.total_quantity;
-      });
+      }); // console.log(this.selectedItem)
     },
     addInvoiceItem: function addInvoiceItem() {
+      console.log(this.selectedItem);
+
       if (this.checkQuantity()) {
         axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://127.0.0.1:8000/data/storeInvoice/', this.selectedItem).then(function (response) {
           console.log(response);
         })["catch"](function (err) {
-          console.log(err.message);
+          console.log(err);
         });
-        this.$emit('selected-item', this.selectedItem);
-        this.selectedItem.sales_price = 0;
-        this.selectedItem.total_quantity = 0;
-        this.selectedItem.quantity = 1;
+        this.$emit('selected-item', this.selectedItem); // this.selectedItem.name = ''
+
+        this.selectedItem = {
+          name: '',
+          sales_price: 0,
+          quantity: 1,
+          total_quantity: 0,
+          total: 0,
+          invoice_id: this.invoice_id
+        };
         this.message = null;
-        $('.form-select').val('-Select an Item-'); //  $('#itemsModal').toggle()
-        // $('.modal-backdrop').toggle()
+        $('.form-select').val('-Select an Item-');
       } else {
         this.message = 'Only ' + this.selectedItem.total_quantity + ' items in stock';
       }

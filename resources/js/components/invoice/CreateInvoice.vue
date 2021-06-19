@@ -127,6 +127,7 @@ export default {
                 this.counter++
                
             })
+              
         },
         generateInvoiceNumber(){
             const getId = (num) => {

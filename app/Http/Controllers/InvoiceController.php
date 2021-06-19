@@ -45,6 +45,13 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
 
+        $this->validate($request, [
+            'invoice_no' => 'unique',
+            'invoice_date' => 'required|after_or_equal:today',
+            'due_date' => 'reuqired',
+            'customer_id' => 'required'
+        ]);
+
         $invoice = Invoice::create([
             'invoice_no' => $request->input('invoice_no'),
             'invoice_date'=> $request->input('invoice_date'),
@@ -65,6 +72,7 @@ class InvoiceController extends Controller
         $item = Item::where('name','=',$request->get('name'))->first();
         $invoice = Invoice::where('id', '=' ,$invoice_id)->first();
         $invoice->items()->attach($item->id, ['quantity' => $request->get('quantity')]);
+        $item->decrement('total_quantity',  $request->get('quantity'));
     }
 
     public function editInvoice(Request $request , $invoice_id){
@@ -76,7 +84,7 @@ class InvoiceController extends Controller
             'total' => $request->get('total')
         ]);
 
-        return redirect('sales.invoices.index');
+        // return redirect('invoices');
     }
     /**
      * Display the specified resource.
@@ -112,6 +120,12 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
+        $this->validate($request, [
+            'invoice_no' => 'unique',
+            'invoice_date' => 'required|after_or_equal:today',
+            'due_date' => 'reuqired',
+            'customer_id' => 'required'
+        ]);
         $invoice->update([
             'invoice_no' => 'invoice',
             'invoice_date'=> $request->input('invoice_date'),

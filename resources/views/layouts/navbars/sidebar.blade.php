@@ -32,15 +32,41 @@
                 <span class="sidebar-normal">{{ __('User profile') }} </span>
               </a>
             </li>
-            <li class="nav-item{{ $activePage == 'user-management' ? ' active' : '' }}">
-              <a class="nav-link" href="{{ route('user.index') }}">
+          </ul>
+        </div>
+      </li>
+       {{-- @can('manage_users') --}}
+      <li class="nav-item {{ ( $activePage == 'user-management') ? ' active' : '' }}">
+        <a class="nav-link" data-toggle="collapse" href="#laravelExamplee" aria-expanded="true">
+          <i class="material-icons">person</i>
+          <p>{{ __('User Management') }}
+            <b class="caret"></b>
+          </p>
+        </a>
+        <div class="collapse show" id="laravelExamplee">
+          <ul class="nav">
+            <li class="nav-item{{ $activePage == 'users' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('users.index') }}">
                 <span class="sidebar-mini"> UM </span>
-                <span class="sidebar-normal"> {{ __('User Management') }} </span>
+                <span class="sidebar-normal"> {{ __('Users') }} </span>
+              </a>
+            </li>
+            <li class="nav-item{{ $activePage == 'roles' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('roles.index') }}">
+                <span class="sidebar-mini"> UM </span>
+                <span class="sidebar-normal"> {{ __('Roles') }} </span>
+              </a>
+            </li>
+            <li class="nav-item{{ $activePage == 'permissions' ? ' active' : '' }}">  
+              <a class="nav-link" href="{{ route('permission.index') }}">
+                <span class="sidebar-mini"> UM </span>
+                <span class="sidebar-normal"> {{ __('Permissions') }} </span>
               </a>
             </li>
           </ul>
         </div>
       </li>
+      {{-- @endcan --}}
       <li class="nav-item{{ $activePage == 'categories' ? ' active' : '' }}">
         <a class="nav-link" href="/categories">
           <i class="material-icons">content_paste</i>

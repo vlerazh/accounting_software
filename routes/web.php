@@ -61,3 +61,18 @@ Route::prefix('data')->namespace('Data')->group(function () {
 	Route::post('storeInvoice', [InvoiceController::class , 'storeInvoice']);
 	Route::put('editInvoice/{id}', [InvoiceController::class , 'editInvoice']);
 });
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::resource('users', App\Http\Controllers\Superadmin\UserController::class);
+   
+    Route::get('serarch', [App\Http\Controllers\Superadmin\UserController::class, 'search'])->name('users.search');
+
+    //permission
+    Route::resource('permission', App\Http\Controllers\Superadmin\PermissionController::class);
+
+    //roles
+    Route::resource('roles', App\Http\Controllers\Superadmin\RoleController::class);
+});
+
