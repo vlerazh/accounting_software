@@ -20,7 +20,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::all();
+        $invoices = Invoice::latest()->get();
         return view('sales.invoices.index')->with('invoices', $invoices);
     }
 

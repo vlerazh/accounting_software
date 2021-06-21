@@ -67,5 +67,19 @@ Route::group(['middleware' => 'auth'], function() {
 
     //roles
     Route::resource('roles', App\Http\Controllers\Superadmin\RoleController::class);
+
+	//status
+	Route::get('status/{id}', [App\Http\Controllers\Superadmin\UserController::class, 'updateStatus'])->name('users.status');
 });
 
+Route::get('send-mail', function () {
+   
+    $details = [
+        'title' => 'Mail from ItSolutionStuff.com',
+        'body' => 'This is for testing email using smtp'
+    ];
+   
+    \Mail::to('vlerazhubi@gmail.com')->send(new \App\Mail\Email($details));
+   
+    dd("Email is Sent.");
+});

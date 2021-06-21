@@ -42,7 +42,7 @@
                     <th>Actions</th>
                   </thead>
                   <tbody>
-                    @foreach ( $invoices as $invoice )
+                    @forelse ( $invoices as $invoice )
                     <tr>
                       <td>{{ $invoice->id }}</td>
                       <td>{{ $invoice->invoice_no }}</td>
@@ -63,7 +63,11 @@
                       </td>
                      
                     </tr>
-                    @endforeach
+                    @empty
+                      <tr>
+                          <td><i class="fa fa-folder-open"></i> No Record found</td>
+                      </tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>

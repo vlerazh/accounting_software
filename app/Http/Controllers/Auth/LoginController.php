@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -37,5 +39,20 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+ 
+    protected function validateLogin(Request $request){
+        // Get the user details from database and check if user is exist and active.
+        $user = User::where('email',$request->email)->first();
+        if( $user && !$user->status){
+            throw ValidationException::withMessages([$this->username() => __('User has been desactivated.')]);
+        }
+
+        // Then, validate input.
+        return $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+        ]);
     }
 }

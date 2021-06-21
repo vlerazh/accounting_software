@@ -36,7 +36,7 @@
                     <th>Actions</th>
                   </thead>
                   <tbody>
-                    @foreach ( $items as $item )
+                    @forelse ( $items as $item )
                     <tr>
                       <td>{{ $item->id }}</td>
                       <td>{{ $item->name }}</td>
@@ -55,7 +55,11 @@
                         </form>
                       </td>
                     </tr>
-                    @endforeach
+                    @empty
+                      <tr>
+                        <td><i class="fa fa-folder-open"></i> No Record found</td>
+                      </tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>

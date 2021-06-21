@@ -17,24 +17,22 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::latest()->get();
         return view('superadmin.users.index')->with('users',$users);
     }
 
-    public function getAll(){
-        $users = User::latest()->get();
-        $users->transform(function($user){
-            $user->role = $user->getRoleNames()->first();
-            $user->userPermissions = $user->getPermissionNames();
-            return $user;
-        });
+    // public function getAll(){
+    //     $users = User::latest()->get();
+    //     $users->transform(function($user){
+    //         $user->role = $user->getRoleNames()->first();
+    //         $user->userPermissions = $user->getPermissionNames();
+    //         return $user;
+    //     });
 
-        return response()->json([
-            'users' => $users
-        ], 200);
-
-
-    }
+    //     return response()->json([
+    //         'users' => $users
+    //     ], 200);
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -165,5 +163,35 @@ class UserController extends Controller
         $user->delete();
         return redirect('users');
     }
-  
+
+    public function search(Request $request){
+        $searchWord = $request->get('table_search');
+        $users = User::where(function($query) use ($searchWord){
+            $query->where('name', 'LIKE', "%$searchWord%")
+            ->orWhere('email', 'LIKE', "%$searchWord%");
+        })->latest()->get();
+
+        $users->transform(function($user){
+            $user->role = $user->getRoleNames()->first();
+            $user->userPermissions = $user->getPermissionNames();
+            return $user;
+        });
+
+        return view('superadmin.users.index')->with('users', $users);
+        
+    }
+
+    public function updateStatus(Request $request, $id){
+
+        $user = User::where('id' , '=' , $id)->first();
+        if($user->status == 0){
+            $user->status = 1;
+        }else{
+            $user->status = 0;
+        }  
+        $user->save();
+        return redirect('users');
+            // dd($user->status == 0);
+    }
 }
+

@@ -22,7 +22,7 @@ User
                                 <form action="{{ route('users.search') }}" method="GET">
                                     @csrf
                                     <div class="input-group mt-0 input-group-sm" style="width: 350px;">
-                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search by name, email">
+                                        <input type="text" name="table_search" class="form-control float-right search_bar" placeholder="Search by name, email">
 
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-default" ><i class="fa fa-search"></i></button>
@@ -41,6 +41,7 @@ User
                             <th>Name</th>
                             <th>Role</th>
                             <th>Email</th>
+                            <th>Status</th>
                             <th>Action</th>
                             <th>Date Posted</th>
                             </tr>
@@ -52,9 +53,10 @@ User
                                     <td> {{ $user->name }}</td>
                                     <td>{{ $user->roles->pluck('name') }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->status }}</td>
                                     <td>
-                                        <a class="btn btn-sm btn-info" href="{{ route('users.show', $user->id) }}"> <i class="fa fa-eye"></i> View</a>
-                                        <a class="btn btn-sm btn-warning" href="{{ route('users.edit', $user->id) }}" > <i class="fa fa-edit"></i> Edit</a>
+                                        {{-- <a class="btn btn-sm btn-info" href="{{ route('users.show', $user->id) }}"> <i class="fa fa-eye"></i> View</a> --}}
+                                        <a class="btn btn-sm btn-warning" href="{{ route('users.status', $user->id) }}" onclick="confirm('Are you sure you want to change user status')"> <i class="fa fa-edit"></i> Change status</a>
                                         <form action="/users/{{ $user->id }}" class="delete-form" method="POST">
                                             @csrf
                                             @method('delete')

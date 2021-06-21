@@ -39,7 +39,7 @@
                     <th>Actions</th>
                   </thead>
                   <tbody>
-                    @foreach ( $categories as $category )
+                    @forelse ( $categories as $category )
                     <tr>
                       <td>{{ $category->id }}</td>
                       <td>{{ $category->name }}</td>
@@ -53,9 +53,12 @@
                             <button style="background: transparent; border:none;" onclick="return confirm('Are you sure?')"> <span class="material-icons delete">delete</span></button>
                         </form>
                       </td>
-                     
                     </tr>
-                    @endforeach
+                    @empty
+                      <tr>
+                        <td><i class="fa fa-folder-open"></i> No Record found</td>
+                      </tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>
