@@ -2086,10 +2086,19 @@ __webpack_require__.r(__webpack_exports__);
     InvoiceItems: _partials_InvoiceItems__WEBPACK_IMPORTED_MODULE_2__.default
   },
   mounted: function mounted() {
-    this.generateInvoiceNumber();
+    // this.generateInvoiceNumber()
     this.getCompany();
+    this.getInvoiceNumebr();
   },
   methods: {
+    getInvoiceNumebr: function getInvoiceNumebr() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/data/invoiceNumber').then(function (response) {
+        _this.data.invoice_no = response.data;
+        console.log(response.data);
+      });
+    },
     selectedCustomer: function selectedCustomer(customer) {
       this.data.customer_id = customer.id;
       this.customer = customer;
@@ -2098,29 +2107,29 @@ __webpack_require__.r(__webpack_exports__);
       this.customer = {};
     },
     getCompany: function getCompany() {
-      var _this = this;
+      var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/data/company/details').then(function (response) {
-        _this.company = response.data;
+        _this2.company = response.data;
       });
     },
     saveInvoice: function saveInvoice() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://127.0.0.1:8000/invoices/', this.data).then(function (response) {
-        _this2.invoice_id = response.data;
-        _this2.showItems = !_this2.showItems;
-        _this2.counter++;
-      });
-    },
-    generateInvoiceNumber: function generateInvoiceNumber() {
-      var getId = function getId(num) {
-        return num.toString().padStart(6, "0");
-      };
+        _this3.invoice_id = response.data;
+        _this3.showItems = !_this3.showItems; // this.counter++
 
-      console.log(this.counter);
-      this.data.invoice_no = getId(this.counter);
-    }
+        console.log(response.data);
+      });
+    } // generateInvoiceNumber(){
+    //     const getId = (num) => {
+    //         return num.toString().padStart(6, "0")
+    //     };
+    //     console.log(this.counter)
+    //     this.data.invoice_no = getId(this.counter);
+    // }
+
   }
 });
 
@@ -82239,7 +82248,12 @@ var render = function() {
                 }
               ],
               staticClass: "form-control ",
-              attrs: { type: "date", name: "invoice_date", required: "" },
+              attrs: {
+                type: "date",
+                name: "invoice_date",
+                min: "2021/06/19",
+                required: ""
+              },
               domProps: { value: _vm.data.invoice_date },
               on: {
                 input: function($event) {

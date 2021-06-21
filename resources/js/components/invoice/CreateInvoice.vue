@@ -8,7 +8,7 @@
             </div>
             <div class="mb-4">
                 <label for="">Invoice Date</label><br>
-                <input type="date" class="form-control " name="invoice_date"  required  v-model="data.invoice_date">
+                <input type="date" class="form-control " name="invoice_date" min="2021/06/19" required  v-model="data.invoice_date">
             </div>
             <div class=" mb-4">
                 <label for="">Due Date</label><br>
@@ -104,10 +104,17 @@ export default {
         InvoiceItems:InvoiceItems
     },        
     mounted(){
-        this.generateInvoiceNumber()
+        // this.generateInvoiceNumber()
         this.getCompany()
+        this.getInvoiceNumebr()
     },
     methods:{
+        getInvoiceNumebr(){
+            axios.get('http://127.0.0.1:8000/data/invoiceNumber').then(response =>{
+                this.data.invoice_no = response.data
+                console.log(response.data)
+            })
+        },
         selectedCustomer(customer){
             this.data.customer_id = customer.id
             this.customer = customer
@@ -124,18 +131,19 @@ export default {
             axios.post('http://127.0.0.1:8000/invoices/', this.data ).then(response => {
                 this.invoice_id = response.data;
                 this.showItems = !this.showItems;
-                this.counter++
+                // this.counter++
+                console.log(response.data)
                
             })
               
         },
-        generateInvoiceNumber(){
-            const getId = (num) => {
-                return num.toString().padStart(6, "0")
-            };
-            console.log(this.counter)
-            this.data.invoice_no = getId(this.counter);
-        }
+        // generateInvoiceNumber(){
+        //     const getId = (num) => {
+        //         return num.toString().padStart(6, "0")
+        //     };
+        //     console.log(this.counter)
+        //     this.data.invoice_no = getId(this.counter);
+        // }
     }
 }
 </script>

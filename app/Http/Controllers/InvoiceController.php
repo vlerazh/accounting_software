@@ -24,6 +24,20 @@ class InvoiceController extends Controller
         return view('sales.invoices.index')->with('invoices', $invoices);
     }
 
+
+    public function invoiceNumber()
+    {
+        $latest = Invoice::latest()->first();
+    
+        if (! $latest) {
+            return 'INV0001';
+        }
+    
+        $string = preg_replace("/[^0-9\.]/", '', $latest->invoice_no);
+    
+        return 'INV' . sprintf('%04d', $string+1);
+    }
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -45,15 +59,15 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
 
-        $this->validate($request, [
-            'invoice_no' => 'unique',
-            'invoice_date' => 'required|after_or_equal:today',
-            'due_date' => 'reuqired',
-            'customer_id' => 'required'
-        ]);
+        // $this->validate($request, [
+        //     'invoice_no' => 'unique',
+        //     'invoice_date' => 'required',
+        //     'due_date' => 'reuqired',
+        //     'customer_id' => 'required'
+        // ]);
 
         $invoice = Invoice::create([
-            'invoice_no' => $request->input('invoice_no'),
+            'invoice_no' => $request->get('invoice_no'),
             'invoice_date'=> $request->input('invoice_date'),
             'due_date'=> $request->input('due_date'),
             'customer_id'=> $request->input('customer_id'),
