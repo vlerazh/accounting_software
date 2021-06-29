@@ -30,7 +30,7 @@ class Email extends Mailable
     public function build()
     
     {
-        return $this->subject('Your account has been diactivated')
+        return $this->subject($this->details['subject'])
                     ->view('emails.deactivateEmail');
     }
 }

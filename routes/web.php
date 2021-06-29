@@ -7,7 +7,6 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\CompanyDetailsController;
 use App\Http\Controllers\ChartController;
-use Stichoza\GoogleTranslate\GoogleTranslate;
 
 
 Route::get('/', function () {
@@ -70,16 +69,9 @@ Route::group(['middleware' => 'auth'], function() {
 
 	//status
 	Route::get('status/{id}', [App\Http\Controllers\Superadmin\UserController::class, 'updateStatus'])->name('users.status');
+
+	
+	
 });
 
-Route::get('send-mail', function () {
-   
-    $details = [
-        'title' => 'Mail from ItSolutionStuff.com',
-        'body' => 'This is for testing email using smtp'
-    ];
-   
-    \Mail::to('vlerazhubi@gmail.com')->send(new \App\Mail\Email($details));
-   
-    dd("Email is Sent.");
-});
+

@@ -21,24 +21,7 @@ class UserController extends Controller
         return view('superadmin.users.index')->with('users',$users);
     }
 
-    // public function getAll(){
-    //     $users = User::latest()->get();
-    //     $users->transform(function($user){
-    //         $user->role = $user->getRoleNames()->first();
-    //         $user->userPermissions = $user->getPermissionNames();
-    //         return $user;
-    //     });
 
-    //     return response()->json([
-    //         'users' => $users
-    //     ], 200);
-    // }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $roles = Role::all();
@@ -182,16 +165,33 @@ class UserController extends Controller
     }
 
     public function updateStatus(Request $request, $id){
-
+        $message_title = null;
+        $message_body = null;
         $user = User::where('id' , '=' , $id)->first();
         if($user->status == 0){
             $user->status = 1;
+            $message_title = 'Activation';
+            $message_body = 'activated';
         }else{
             $user->status = 0;
+            $message_title = 'Deactivation';
+            $message_body = 'deactivated';
         }  
         $user->save();
+        $this->sendEmail($message_title ,$message_body, $user->email);
         return redirect('users');
-            // dd($user->status == 0);
+    }
+
+    public function sendEmail($message_title ,$message_body ,$email){
+        
+        $details = [
+            'subject' => 'Your account has been ' . $message_body,
+            'title' => 'Account ' . $message_title,
+            'body' => 'Accounting software has ' . $message_body .' you account. Form more information please contact administration.'
+        ];
+
+        \Mail::to($email)->send(new \App\Mail\Email($details));
+        return redirect('users');
     }
 }
 
