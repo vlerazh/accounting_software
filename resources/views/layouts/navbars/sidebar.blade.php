@@ -107,6 +107,12 @@
           </ul>
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="">
+          <i class="material-icons">chat</i>
+          Chat
+        </a>
+      </li>
     </ul>
   </div>
 </div>
