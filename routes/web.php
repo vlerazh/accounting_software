@@ -52,6 +52,9 @@ Route::prefix('data')->namespace('Data')->group(function () {
 	Route::post('storeInvoice', [InvoiceController::class , 'storeInvoice']);
 	Route::put('editInvoice/{id}', [InvoiceController::class , 'editInvoice']);
 	Route::get('invoiceNumber', [InvoiceController::class , 'invoiceNumber']);
+	Route::get('/user' , function(){
+		return Auth::user();
+	});
 });
 
 Route::group(['middleware' => 'auth'], function() {

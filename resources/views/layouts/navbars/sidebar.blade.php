@@ -108,7 +108,7 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="http://localhost:8001/">
+        <a class="nav-link" href="http://host.docker.internal:8001/user={{ Auth::user() }} ">
           <i class="material-icons">chat</i>
           Chat
         </a>

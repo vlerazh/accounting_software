@@ -18,7 +18,7 @@ class CreateItemsTable extends Migration
             $table->string('name');
             $table->float('sales_price');
             $table->float('purchase_price');
-            $table->integer('total_quantity');
+            $table->integer('total_quantity')->default(0);
             $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();

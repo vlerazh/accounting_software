@@ -1869,7 +1869,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     drawChart: function drawChart() {
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get('http://127.0.0.1:8000/chartCustomers').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get('http://host.docker.internal:8000/chartCustomers').then(function (response) {
         var ctx = document.getElementById("myChart");
         var myChart = new (chart_js__WEBPACK_IMPORTED_MODULE_0___default())(ctx, {
           type: 'line',
@@ -1936,7 +1936,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     drawChart: function drawChart() {
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get('http://127.0.0.1:8000/chartItems').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get('http://host.docker.internal:8000/chartItems').then(function (response) {
         console.log(response.data);
         var ctx = document.getElementById("itemChart");
         var myChart = new (chart_js__WEBPACK_IMPORTED_MODULE_0___default())(ctx, {

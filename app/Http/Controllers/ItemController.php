@@ -41,10 +41,10 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'unique|required',
+            'name' => 'required',
             'sales_price' => 'required|gt:0',
-            'purchase_price' => 'reuqired|gt:0',
-            'total_quantity' => 'required|gt:0',
+            'purchase_price' => 'required|gt:0',
+            'total_quantity' => 'required',
             'category_id' => 'required'
         ]);
         $item = Item::create([
@@ -92,9 +92,9 @@ class ItemController extends Controller
     public function update(Request $request, Item $item)
     {
         $this->validate($request, [
-            'name' => 'unique|required',
+            'name' => 'required',
             'sales_price' => 'required|gt:0',
-            'purchase_price' => 'reuqired|gt:0',
+            'purchase_price' => 'required|gt:0',
             'total_quantity' => 'required|gt:0',
             'category_id' => 'required'
         ]);

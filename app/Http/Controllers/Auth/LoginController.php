@@ -39,12 +39,12 @@ class LoginController extends Controller
      *
      * @return void
      */
-    private $user;
+
     public function __construct()
     {
-        $this->middleware('guest' , function(){
-            $this->user = Auth::user();
-        })->except('logout');
+        $this->middleware('guest')->except('logout');
+         
+           
     }
 
 
@@ -55,15 +55,17 @@ class LoginController extends Controller
         if( $user && !$user->status){
             throw ValidationException::withMessages([$this->username() => __('User has been desactivated.')]);
         }
-
+        $request->session()->put('user', $user);
         // Then, validate input
         return $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
         ]);
+
+        
     }
 
     public function getLoggedUser(){
-        dd( $this->user);
+        print_r(session()->all());
     }
 }
