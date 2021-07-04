@@ -63,12 +63,12 @@ export default {
     },
     methods:{
         getItems(){
-            axios.get('http://127.0.0.1:8000/data/all-items').then(response => {
+            axios.get('http://host.docker.internal:8000/data/all-items').then(response => {
                 this.items = response.data
             })
         },
         getSelectedItem(event){
-            axios.get('http://127.0.0.1:8000/items/' + event.target.value).then(response => {
+            axios.get('http://host.docker.internal:8000/items/' + event.target.value).then(response => {
                 this.selectedItem.name = response.data.item.name
                 this.selectedItem.sales_price = response.data.item.sales_price
                 this.selectedItem.total_quantity = response.data.item.total_quantity
@@ -78,7 +78,7 @@ export default {
         addInvoiceItem(){
             console.log(this.selectedItem)
             if(this.checkQuantity()){
-                axios.post('http://127.0.0.1:8000/data/storeInvoice/' , this.selectedItem).then(response=>{
+                axios.post('http://host.docker.internal:8000/data/storeInvoice/' , this.selectedItem).then(response=>{
                     console.log(response);
                 }).catch(err => {
                     console.log(err)

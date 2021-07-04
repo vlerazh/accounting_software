@@ -2094,7 +2094,7 @@ __webpack_require__.r(__webpack_exports__);
     getInvoiceNumebr: function getInvoiceNumebr() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/data/invoiceNumber').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://host.docker.internal:8000/data/invoiceNumber').then(function (response) {
         _this.data.invoice_no = response.data;
         console.log(response.data);
       });
@@ -2109,14 +2109,14 @@ __webpack_require__.r(__webpack_exports__);
     getCompany: function getCompany() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/data/company/details').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://host.docker.internal:8000/data/company/details').then(function (response) {
         _this2.company = response.data;
       });
     },
     saveInvoice: function saveInvoice() {
       var _this3 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://127.0.0.1:8000/invoices/', this.data).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://host.docker.internal:8000/invoices/', this.data).then(function (response) {
         _this3.invoice_id = response.data;
         _this3.showItems = !_this3.showItems; // this.counter++
 
@@ -2187,14 +2187,14 @@ __webpack_require__.r(__webpack_exports__);
     getCustomers: function getCustomers() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/data/all').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://host.docker.internal:8000/data/all').then(function (response) {
         _this.customers = response.data;
       });
     },
     getCustomer: function getCustomer(event) {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/customers/' + event.target.value).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://host.docker.internal:8000/customers/' + event.target.value).then(function (response) {
         _this2.$emit('customerSelected', response.data.customer);
       });
       $('#customersModal').toggle();
@@ -2322,7 +2322,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.items.splice(index, 1);
     },
     saveItems: function saveItems() {
-      axios__WEBPACK_IMPORTED_MODULE_0___default().put('http://127.0.0.1:8000/data/editInvoice/' + this.invoice_id, {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().put('http://host.docker.internal:8000/data/editInvoice/' + this.invoice_id, {
         sub_total: this.sub_total,
         discount: this.discount,
         total: this.totalAmount
@@ -2421,14 +2421,14 @@ __webpack_require__.r(__webpack_exports__);
     getItems: function getItems() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/data/all-items').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://host.docker.internal:8000/data/all-items').then(function (response) {
         _this.items = response.data;
       });
     },
     getSelectedItem: function getSelectedItem(event) {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/items/' + event.target.value).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://host.docker.internal:8000/items/' + event.target.value).then(function (response) {
         _this2.selectedItem.name = response.data.item.name;
         _this2.selectedItem.sales_price = response.data.item.sales_price;
         _this2.selectedItem.total_quantity = response.data.item.total_quantity;
@@ -2438,7 +2438,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.selectedItem);
 
       if (this.checkQuantity()) {
-        axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://127.0.0.1:8000/data/storeInvoice/', this.selectedItem).then(function (response) {
+        axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://host.docker.internal:8000/data/storeInvoice/', this.selectedItem).then(function (response) {
           console.log(response);
         })["catch"](function (err) {
           console.log(err);

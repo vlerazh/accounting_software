@@ -102,7 +102,7 @@ export default {
             return this.items.splice(index,1)
         },
         saveItems(){
-            axios.put('http://127.0.0.1:8000/data/editInvoice/'+ this.invoice_id, {
+            axios.put('http://host.docker.internal:8000/data/editInvoice/'+ this.invoice_id, {
                 sub_total: this.sub_total,
                 discount: this.discount,
                 total: this.totalAmount

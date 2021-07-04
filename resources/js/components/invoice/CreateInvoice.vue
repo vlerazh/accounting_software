@@ -110,7 +110,7 @@ export default {
     },
     methods:{
         getInvoiceNumebr(){
-            axios.get('http://127.0.0.1:8000/data/invoiceNumber').then(response =>{
+            axios.get('http://host.docker.internal:8000/data/invoiceNumber').then(response =>{
                 this.data.invoice_no = response.data
                 console.log(response.data)
             })
@@ -123,12 +123,12 @@ export default {
             this.customer = { }
         },
         getCompany(){
-            axios.get('http://127.0.0.1:8000/data/company/details').then(response =>{
+            axios.get('http://host.docker.internal:8000/data/company/details').then(response =>{
                 this.company = response.data
             })
         },
         saveInvoice(){
-            axios.post('http://127.0.0.1:8000/invoices/', this.data ).then(response => {
+            axios.post('http://host.docker.internal:8000/invoices/', this.data ).then(response => {
                 this.invoice_id = response.data;
                 this.showItems = !this.showItems;
                 // this.counter++

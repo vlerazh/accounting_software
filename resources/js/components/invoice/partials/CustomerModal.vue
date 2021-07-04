@@ -36,12 +36,12 @@ export default {
     },
     methods:{
         getCustomers(){
-            axios.get('http://127.0.0.1:8000/data/all').then(response =>{
+            axios.get('http://host.docker.internal:8000/data/all').then(response =>{
                 this.customers = response.data
             })
         },
         getCustomer(event){
-            axios.get('http://127.0.0.1:8000/customers/' + event.target.value).then(response => {
+            axios.get('http://host.docker.internal:8000/customers/' + event.target.value).then(response => {
                 this.$emit('customerSelected',  response.data.customer)
             })
             $('#customersModal').toggle()
