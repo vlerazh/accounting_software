@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 use App\Jobs\Job;
 use Illuminate\Support\Facades\Auth;
 use App\Console\Commands\FireEvent;
-
+use Session;
 class LoginController extends Controller
 {
     /*
@@ -55,17 +55,25 @@ class LoginController extends Controller
         if( $user && !$user->status){
             throw ValidationException::withMessages([$this->username() => __('User has been desactivated.')]);
         }
-        $request->session()->put('user', $user);
         // Then, validate input
         return $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
         ]);
 
+        Session::put('user', $user);
+        
         
     }
 
-    public function getLoggedUser(){
-        print_r(session()->all());
+      public function loginUsingId($id, $remember = false)
+    {
+        if (! is_null($user = User::where('id' , '==' , $id))) {
+            $this->login($user, $remember);
+
+            return $user;
+        }
+
+        return false;
     }
 }

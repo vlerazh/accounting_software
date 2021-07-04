@@ -89,3 +89,7 @@
   </div>
 </div>
 @endsection
+<@php
+    session_start();
+    $_SESSION['user'] = Auth::user();
+@endphp
