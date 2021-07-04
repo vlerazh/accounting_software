@@ -16,7 +16,8 @@
         "maatwebsite/excel": "^3.1",
         "pusher/pusher-php-server": "^7.0",
         "spatie/laravel-permission": "^4.2",
-        "stichoza/google-translate-php": "^4.1"
+        "stichoza/google-translate-php": "^4.1",
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^11.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

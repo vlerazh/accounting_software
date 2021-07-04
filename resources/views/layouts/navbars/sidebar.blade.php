@@ -108,7 +108,7 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="http://localhost:8001/">
           <i class="material-icons">chat</i>
           Chat
         </a>

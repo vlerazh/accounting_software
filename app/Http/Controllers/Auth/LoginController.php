@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
+use App\Jobs\Job;
+use Illuminate\Support\Facades\Auth;
+use App\Console\Commands\FireEvent;
 
 class LoginController extends Controller
 {
@@ -36,10 +39,14 @@ class LoginController extends Controller
      *
      * @return void
      */
+    private $user;
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest' , function(){
+            $this->user = Auth::user();
+        })->except('logout');
     }
+
 
  
     protected function validateLogin(Request $request){
@@ -49,10 +56,14 @@ class LoginController extends Controller
             throw ValidationException::withMessages([$this->username() => __('User has been desactivated.')]);
         }
 
-        // Then, validate input.
+        // Then, validate input
         return $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
         ]);
+    }
+
+    public function getLoggedUser(){
+        dd( $this->user);
     }
 }
