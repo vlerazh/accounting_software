@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\Invoice;
-
+use Auth;
+use App\Jobs\Job;
 class HomeController extends Controller
 {
     /**
@@ -22,6 +23,7 @@ class HomeController extends Controller
      */
     public function index(){
 
+        Job::dispatch(Auth::user()->toArray());
         $totalIncome = $this->caculateIncome();
         return view('dashboard')->with('totalIncome', $totalIncome);
     }

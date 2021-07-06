@@ -66,14 +66,4 @@ class LoginController extends Controller
         
     }
 
-      public function loginUsingId($id, $remember = false)
-    {
-        if (! is_null($user = User::where('id' , '==' , $id))) {
-            $this->login($user, $remember);
-
-            return $user;
-        }
-
-        return false;
-    }
 }
