@@ -61,7 +61,6 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        Session::put('user', $user);
         
         
     }
