@@ -21,7 +21,7 @@
         },
         methods: {
             drawChart() {
-                axios.get('http://host.docker.internal:8000/chartItems').then(response=>{
+                axios.get('/chartItems').then(response=>{
                     console.log(response.data)
                      let ctx = document.getElementById("itemChart");
                 
